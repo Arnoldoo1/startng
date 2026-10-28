@@ -125,7 +125,7 @@ export function SiteFooter() {
           <Link href="/leaderboard">Leaderboard</Link>
           <Link href="/categories">Categories</Link>
           <Link href="/hangout">The Hangout</Link>
-          <Link href="/toybox" className="footer-special">The Moon Market ✦</Link>
+          <Link href="/toybox" className="footer-special">The Sun Market ✦</Link>
         </div>
         <div>
           <h2>Make games</h2>
@@ -136,7 +136,7 @@ export function SiteFooter() {
         <div>
           <h2>About</h2>
           <Link href="/about">About start.ng</Link>
-          <Link href="/toybox/design">Moon Market design notes</Link>
+          <Link href="/toybox/design">Sun Market design notes</Link>
         </div>
       </div>
       <div className="container footer-bottom">

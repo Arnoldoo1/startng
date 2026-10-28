@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState, type ComponentType, type FormEvent } from 'react';
 import { formatPlays, getGame, games, type Game } from '@/lib/site';
 import { useApp } from './AppProvider';
-import { MoonMarketScene } from './MoonMarketScene';
+import { SunMarketScene } from './SunMarketScene';
 
 type IconProps = { className?: string };
 type CharmKey = 'lantern' | 'district' | 'dare' | 'wish' | 'moth';
@@ -19,7 +19,7 @@ type District = {
   Icon: ComponentType<IconProps>;
 };
 
-const STORAGE_KEY = 'startng:moonmarket:v1';
+const STORAGE_KEY = 'startng:sunmarket:v1';
 const EMPTY_CHARMS: CharmState = { lantern: false, district: false, dare: false, wish: false, moth: false };
 
 const FEATURED = [
@@ -58,7 +58,7 @@ const DISTRICTS: District[] = [
   },
   {
     key: 'arcade',
-    name: 'The Midnight Arcade',
+    name: 'The Arcade Lawn',
     note: 'Dodge first. Think later. Regret nothing.',
     cats: ['Catch and dodge', 'Survival'],
     tint: 'violet',
@@ -66,8 +66,8 @@ const DISTRICTS: District[] = [
   },
   {
     key: 'docks',
-    name: 'The Star Docks',
-    note: 'For nights that need more laser.',
+    name: 'The Sky Docks',
+    note: 'For afternoons that need more laser.',
     cats: ['Space and sci-fi', 'Neon and cyberpunk'],
     tint: 'sky',
     Icon: StarDockIcon,
@@ -93,18 +93,18 @@ const QUESTS = [
 
 const AMBIENT_WISHES = [
   { text: 'One more round, and then I will actually go home.', by: 'the market keeper' },
-  { text: 'Let the soup game be gentle with me tonight.', by: 'a night walker' },
-  { text: 'Keep a light on for everyone still on their way.', by: 'the moon' },
+  { text: 'Let the soup game be gentle with me today.', by: 'a morning walker' },
+  { text: 'Keep a light on for everyone still on their way.', by: 'the sun' },
 ];
 
 const CHARMS: { key: Exclude<CharmKey, 'moth'>; label: string; hint: string }[] = [
-  { key: 'lantern', label: 'A game drawn', hint: 'Ask the moon for a lantern.' },
+  { key: 'lantern', label: 'A game drawn', hint: 'Ask the sun for a lantern.' },
   { key: 'district', label: 'A district found', hint: 'Choose somewhere to wander.' },
   { key: 'dare', label: 'A dare taken', hint: 'Accept one small quest.' },
   { key: 'wish', label: 'A wish released', hint: 'Leave a light in the sky.' },
 ];
 
-export function MoonMarketExperience() {
+export function SunMarketExperience() {
   const { isFavorite, toggleFavorite, notify } = useApp();
   const heroRef = useRef<HTMLElement | null>(null);
   const mothCloseRef = useRef<HTMLButtonElement | null>(null);
@@ -178,7 +178,7 @@ export function MoonMarketExperience() {
   useEffect(() => {
     if (!hydrated || !allCharms || rewardSeen) return;
     setRewardSeen(true);
-    notify('The moon noticed you. A new constellation is yours.');
+    notify('The sun noticed you. A new constellation is yours.');
   }, [allCharms, hydrated, notify, rewardSeen]);
 
   useEffect(() => {
@@ -200,14 +200,14 @@ export function MoonMarketExperience() {
         const rect = element.getBoundingClientRect();
         const x = (event.clientX - rect.left) / rect.width - 0.5;
         const y = (event.clientY - rect.top) / rect.height - 0.5;
-        element.style.setProperty('--mm-mx', x.toFixed(3));
-        element.style.setProperty('--mm-my', y.toFixed(3));
+        element.style.setProperty('--sm-mx', x.toFixed(3));
+        element.style.setProperty('--sm-my', y.toFixed(3));
         frame = 0;
       });
     };
     const leave = () => {
-      element.style.setProperty('--mm-mx', '0');
-      element.style.setProperty('--mm-my', '0');
+      element.style.setProperty('--sm-mx', '0');
+      element.style.setProperty('--sm-my', '0');
     };
     element.addEventListener('pointermove', move);
     element.addEventListener('pointerleave', leave);
@@ -284,7 +284,7 @@ export function MoonMarketExperience() {
     setWishText('');
     setWishError('');
     addCharm('wish');
-    notify('Your lantern is climbing.');
+    notify('Your wish is in the sky.');
   };
 
   const openMoth = () => {
@@ -302,99 +302,99 @@ export function MoonMarketExperience() {
   const mothPickCover = mothPick?.cover ?? '/covers/follow-follow.webp';
 
   return (
-    <main className="mm-main">
-      <section className="mm-hero" ref={heroRef}>
-        <div className="mm-wrap mm-hero-grid">
-          <div className="mm-hero-copy">
-            <span className="mm-flag">
+    <main className="sm-main">
+      <section className="sm-hero" ref={heroRef}>
+        <div className="sm-wrap sm-hero-grid">
+          <div className="sm-hero-copy">
+            <span className="sm-flag">
               <i aria-hidden="true" />
-              a start.ng design direction · after hours
+              a start.ng design direction · in daylight
             </span>
             <h1>
-              The city sleeps.
+              The city wakes.
               <br />
-              <em>The games come out.</em>
+              <em>The games bloom.</em>
             </h1>
-            <p className="mm-lede">
-              Welcome to <b>The Moon Market</b> — a floating night market above Lagos. Every stall is a game, every
-              lantern is an invitation, and the moon keeps score. No tickets. No closing time.
+            <p className="sm-lede">
+              Welcome to <b>The Sun Market</b> — a floating day market above Lagos. Every stall is a game, every
+              lantern is an invitation, and the sun keeps score. No tickets. No closing time.
             </p>
-            <div className="mm-hero-actions">
-              <a className="mm-btn mm-btn-gold" href="#stalls">
+            <div className="sm-hero-actions">
+              <a className="sm-btn sm-btn-gold" href="#stalls">
                 Wander the stalls <span aria-hidden="true">↓</span>
               </a>
-              <a className="mm-btn mm-btn-quiet" href="#wish">
+              <a className="sm-btn sm-btn-quiet" href="#wish">
                 Make a wish <span aria-hidden="true">✦</span>
               </a>
             </div>
-            <div className="mm-hero-meta" aria-label="Market facts">
+            <div className="sm-hero-meta" aria-label="Market facts">
               <span><b>189</b> stalls</span>
               <i aria-hidden="true" />
               <span><b>33</b> districts</span>
               <i aria-hidden="true" />
               <span><b>0</b> naira entry</span>
             </div>
-            <p className="mm-hero-whisper">Psst — the moon is listening.</p>
+            <p className="sm-hero-whisper">Psst — the sun is listening.</p>
           </div>
 
-          <div className="mm-scene-wrap">
-            <span className="mm-scene-caption">above the last bus stop · 6:42pm</span>
-            <div className="mm-scene-parallax">
-              <MoonMarketScene complete={allCharms} />
+          <div className="sm-scene-wrap">
+            <span className="sm-scene-caption">above the morning bus stop · 9:14am</span>
+            <div className="sm-scene-parallax">
+              <SunMarketScene complete={allCharms} />
             </div>
             <button
               type="button"
-              className={`mm-moth${charms.moth ? ' is-found' : ''}`}
+              className={`sm-moth${charms.moth ? ' is-found' : ''}`}
               onClick={openMoth}
-              aria-label="A moon moth has a secret"
-              title="A moon moth has a secret"
+              aria-label="A sun moth has a secret"
+              title="A sun moth has a secret"
             >
               <MothIcon />
             </button>
-            <span className="mm-scene-note">the moon keeps score</span>
+            <span className="sm-scene-note">the sun keeps time</span>
           </div>
         </div>
-        <a className="mm-scroll-cue" href="#map" aria-label="Follow the lights to the first-timer's map">
+        <a className="sm-scroll-cue" href="#map" aria-label="Follow the lights to the first-timer's map">
           <span aria-hidden="true">follow the lights</span>
           <i aria-hidden="true">↓</i>
         </a>
       </section>
 
-      <div className="mm-ticker" aria-hidden="true">
-        <div className="mm-ticker-track">
+      <div className="sm-ticker" aria-hidden="true">
+        <div className="sm-ticker-track">
           {[0, 1].map((copy) => (
             <span key={copy}>
-              the market is open <i>✦</i> 189 stalls <i>✦</i> 33 districts <i>✦</i> one moon <i>✦</i> free entry{' '}
-              <i>✦</i> open all night <i>✦</i>
+              the market is open <i>✦</i> 189 stalls <i>✦</i> 33 districts <i>✦</i> one sun <i>✦</i> free entry{' '}
+              <i>✦</i> open all day <i>✦</i>
             </span>
           ))}
         </div>
       </div>
 
-      <section className="mm-section mm-map-section" id="map">
-        <div className="mm-wrap">
-          <div className="mm-map">
-            <div className="mm-map-intro">
-              <p className="mm-kicker">first time at the market?</p>
+      <section className="sm-section sm-map-section" id="map">
+        <div className="sm-wrap">
+          <div className="sm-map">
+            <div className="sm-map-intro">
+              <p className="sm-kicker">first time at the market?</p>
               <h2>Follow the lights.</h2>
-              <p>Three small rituals, then the market is yours. The moon is patient, but she does like a little effort.</p>
+              <p>Three small rituals, then the market is yours. The sun is patient, but she does like a little effort.</p>
             </div>
-            <ol className="mm-map-steps">
+            <ol className="sm-map-steps">
               <li>
-                <span className="mm-step-number">01</span>
-                <span className="mm-step-icon" aria-hidden="true"><LanternIcon /></span>
-                <b>Ask the moon</b>
+                <span className="sm-step-number">01</span>
+                <span className="sm-step-icon" aria-hidden="true"><LanternIcon /></span>
+                <b>Ask the sun</b>
                 <span>Pull a lantern for a game you did not know you needed.</span>
               </li>
               <li>
-                <span className="mm-step-number">02</span>
-                <span className="mm-step-icon" aria-hidden="true"><CompassIcon /></span>
+                <span className="sm-step-number">02</span>
+                <span className="sm-step-icon" aria-hidden="true"><CompassIcon /></span>
                 <b>Choose a district</b>
                 <span>Six moods. Each one opens three more stalls.</span>
               </li>
               <li>
-                <span className="mm-step-number">03</span>
-                <span className="mm-step-icon" aria-hidden="true"><WishIcon /></span>
+                <span className="sm-step-number">03</span>
+                <span className="sm-step-icon" aria-hidden="true"><WishIcon /></span>
                 <b>Leave a wish</b>
                 <span>Send a small light up for the next wanderer.</span>
               </li>
@@ -403,83 +403,83 @@ export function MoonMarketExperience() {
         </div>
       </section>
 
-      <section className="mm-section" id="lantern">
-        <div className="mm-wrap mm-draw">
-          <div className="mm-draw-stage">
-            <span className="mm-stage-label">the lantern draw</span>
-            <div className={`mm-lantern${spinning ? ' is-spinning' : ''}${picked ? ' is-open' : ''}`} aria-hidden="true">
-              <span className="mm-lantern-thread" />
-              <span className="mm-lantern-halo" />
-              <div className="mm-lantern-body">
-                <div className="mm-lantern-window">
+      <section className="sm-section" id="lantern">
+        <div className="sm-wrap sm-draw">
+          <div className="sm-draw-stage">
+            <span className="sm-stage-label">the lantern draw</span>
+            <div className={`sm-lantern${spinning ? ' is-spinning' : ''}${picked ? ' is-open' : ''}`} aria-hidden="true">
+              <span className="sm-lantern-thread" />
+              <span className="sm-lantern-halo" />
+              <div className="sm-lantern-body">
+                <div className="sm-lantern-window">
                   {current && <img src={current.cover} alt="" />}
                 </div>
-                <span className="mm-lantern-bar bar-a" />
-                <span className="mm-lantern-bar bar-b" />
-                <span className="mm-lantern-bar bar-c" />
+                <span className="sm-lantern-bar bar-a" />
+                <span className="sm-lantern-bar bar-b" />
+                <span className="sm-lantern-bar bar-c" />
               </div>
-              <span className="mm-lantern-cap" />
-              <span className="mm-lantern-tassel" />
+              <span className="sm-lantern-cap" />
+              <span className="sm-lantern-tassel" />
             </div>
-            <div className="mm-lantern-orbit" aria-hidden="true">
+            <div className="sm-lantern-orbit" aria-hidden="true">
               <span>✦</span>
               <span>·</span>
               <span>✦</span>
               <span>·</span>
               <span>✦</span>
             </div>
-            <span className="mm-stage-note">one pull · one stall · no coins</span>
+            <span className="sm-stage-note">one pull · one stall · no coins</span>
           </div>
 
-          <div className="mm-draw-copy">
-            <p className="mm-kicker">the lantern draw</p>
-            <h2>Ask the moon for one game.</h2>
+          <div className="sm-draw-copy">
+            <p className="sm-kicker">the lantern draw</p>
+            <h2>Ask the sun for one game.</h2>
             <p>
-              The moon has 188 games in her pocket and no favourites. Pull a lantern; whatever light lands is
-              tonight&apos;s stall. If it is a racing game and you wanted soup, the market is teaching you about life.
+              The sun has 188 games in her pocket and no favourites. Pull a lantern; whatever light lands is
+              today&apos;s stall. If it is a racing game and you wanted soup, the market is teaching you about life.
             </p>
-            <div className="mm-actions">
-              <button type="button" className="mm-btn mm-btn-gold" onClick={drawLantern} disabled={spinning}>
-                {spinning ? 'The moon is looking…' : picked ? 'Ask for another' : 'Pull a lantern'} <span aria-hidden="true">✦</span>
+            <div className="sm-actions">
+              <button type="button" className="sm-btn sm-btn-gold" onClick={drawLantern} disabled={spinning}>
+                {spinning ? 'The sun is looking…' : picked ? 'Ask for another' : 'Pull a lantern'} <span aria-hidden="true">✦</span>
               </button>
               {picked && (
-                <Link className="mm-text-link" href={`/games/${picked.slug}`}>
+                <Link className="sm-text-link" href={`/games/${picked.slug}`}>
                   See the whole stall <span aria-hidden="true">↗</span>
                 </Link>
               )}
             </div>
 
-            <div className="mm-draw-result" aria-live="polite">
+            <div className="sm-draw-result" aria-live="polite">
               {spinning ? (
-                <div className="mm-draw-loading">
-                  <span className="mm-loading-lantern" aria-hidden="true">✦</span>
+                <div className="sm-draw-loading">
+                  <span className="sm-loading-lantern" aria-hidden="true">✦</span>
                   <div>
                     <b>The market is holding its breath.</b>
-                    <p>Lanterns turning, tiny gears clicking, the moon pretending not to peek.</p>
+                    <p>Lanterns turning, tiny gears clicking, the sun pretending not to peek.</p>
                   </div>
                 </div>
               ) : picked ? (
-                <article className="mm-draw-picked">
+                <article className="sm-draw-picked">
                   <div>
-                    <span className="mm-result-kicker">tonight&apos;s stall</span>
+                    <span className="sm-result-kicker">today&apos;s stall</span>
                     <h3>{picked.title}</h3>
                     <p>
                       by {picked.by} · {formatPlays(picked.plays)} plays
                     </p>
-                    <div className="mm-tags">
+                    <div className="sm-tags">
                       {picked.categories.slice(0, 3).map((category) => (
                         <span key={category}>{category}</span>
                       ))}
                     </div>
                   </div>
-                  <Link className="mm-btn mm-btn-small" href={`/games/${picked.slug}/play`}>
+                  <Link className="sm-btn sm-btn-small" href={`/games/${picked.slug}/play`}>
                     Play now <span aria-hidden="true">→</span>
                   </Link>
                 </article>
               ) : (
-                <div className="mm-draw-idle">
+                <div className="sm-draw-idle">
                   <b>The lantern is waiting.</b>
-                  <p>Give it a pull. The moon has excellent taste and questionable patience.</p>
+                  <p>Give it a pull. The sun has excellent taste and questionable patience.</p>
                 </div>
               )}
             </div>
@@ -487,45 +487,45 @@ export function MoonMarketExperience() {
         </div>
       </section>
 
-      <section className="mm-section" id="districts">
-        <div className="mm-wrap">
-          <div className="mm-section-head">
+      <section className="sm-section" id="districts">
+        <div className="sm-wrap">
+          <div className="sm-section-head">
             <div>
-              <p className="mm-kicker">the six districts</p>
-              <h2>Six districts. One moon.</h2>
-              <p>Pick the kind of night you are after. Each district keeps three stalls warm for you.</p>
+              <p className="sm-kicker">the six districts</p>
+              <h2>Six districts. One sun.</h2>
+              <p>Pick the kind of afternoon you are after. Each district keeps three stalls warm for you.</p>
             </div>
             {district && (
-              <button type="button" className="mm-text-link" onClick={() => setDistrictKey(null)}>
+              <button type="button" className="sm-text-link" onClick={() => setDistrictKey(null)}>
                 Clear the district <span aria-hidden="true">✕</span>
               </button>
             )}
           </div>
 
-          <div className="mm-district-grid" role="group" aria-label="Choose a district">
+          <div className="sm-district-grid" role="group" aria-label="Choose a district">
             {DISTRICTS.map(({ key, name, note, tint, Icon }) => {
               const active = districtKey === key;
               return (
                 <button
                   key={key}
                   type="button"
-                  className={`mm-district tint-${tint}${active ? ' is-active' : ''}`}
+                  className={`sm-district tint-${tint}${active ? ' is-active' : ''}`}
                   onClick={() => chooseDistrict(key)}
                   aria-pressed={active}
                 >
-                  <span className="mm-district-icon" aria-hidden="true"><Icon /></span>
+                  <span className="sm-district-icon" aria-hidden="true"><Icon /></span>
                   <b>{name}</b>
                   <span>{note}</span>
-                  <i className="mm-district-mark" aria-hidden="true">{active ? 'lit' : 'enter'}</i>
+                  <i className="sm-district-mark" aria-hidden="true">{active ? 'lit' : 'enter'}</i>
                 </button>
               );
             })}
           </div>
 
-          <div className="mm-district-results" aria-live="polite">
+          <div className="sm-district-results" aria-live="polite">
             {!district ? (
-              <div className="mm-empty">
-                <span className="mm-empty-glyph" aria-hidden="true">✦</span>
+              <div className="sm-empty">
+                <span className="sm-empty-glyph" aria-hidden="true">✦</span>
                 <div>
                   <b>The stalls are still waking.</b>
                   <p>Choose a district above and three lights will come on.</p>
@@ -546,19 +546,19 @@ export function MoonMarketExperience() {
         </div>
       </section>
 
-      <section className="mm-section" id="stalls">
-        <div className="mm-wrap">
-          <div className="mm-section-head">
+      <section className="sm-section" id="stalls">
+        <div className="sm-wrap">
+          <div className="sm-section-head">
             <div>
-              <p className="mm-kicker">on the bridge tonight</p>
+              <p className="sm-kicker">on the bridge today</p>
               <h2>Stalls worth crossing for.</h2>
               <p>Six good ones, hand-picked by the market keeper. Start anywhere. There is no wrong first stall.</p>
             </div>
-            <Link className="mm-text-link" href="/games">
+            <Link className="sm-text-link" href="/games">
               All 189 stalls <span aria-hidden="true">↗</span>
             </Link>
           </div>
-          <div className="mm-stall-grid">
+          <div className="sm-stall-grid">
             {featured.map(({ game, tag }) => (
               <StallCard
                 key={game.slug}
@@ -572,111 +572,111 @@ export function MoonMarketExperience() {
         </div>
       </section>
 
-      <section className="mm-section" id="night-bus">
-        <div className="mm-wrap">
-          <div className="mm-bus-panel">
-            <div className="mm-bus-art">
+      <section className="sm-section" id="breeze-line">
+        <div className="sm-wrap">
+          <div className="sm-bus-panel">
+            <div className="sm-bus-art">
               <img src="/covers/the-hangout.webp" alt="The Hangout, a park where start.ng players meet" loading="lazy" />
-              <span className="mm-ticket">night bus · one way · no fare</span>
-              <span className="mm-bus-glow" aria-hidden="true" />
+              <span className="sm-ticket">breeze line · one way · no fare</span>
+              <span className="sm-bus-glow" aria-hidden="true" />
             </div>
-            <div className="mm-bus-copy">
-              <p className="mm-kicker">the last bus goes somewhere better</p>
+            <div className="sm-bus-copy">
+              <p className="sm-kicker">the next breeze goes somewhere better</p>
               <h2>Meet everyone at the Hangout.</h2>
               <p>
-                The Night Bus runs from the market to the park, where the games put their controllers down and
+                The Breeze Line runs from the market to the park, where the games put their controllers down and
                 become people. Walk in as your start.ng character, wave at a stranger, stay for the bench with the
                 best view of the sky.
               </p>
-              <div className="mm-actions">
-                <Link className="mm-btn mm-btn-gold" href="/hangout">
-                  Board the Night Bus <span aria-hidden="true">→</span>
+              <div className="sm-actions">
+                <Link className="sm-btn sm-btn-gold" href="/hangout">
+                  Board the Breeze Line <span aria-hidden="true">→</span>
                 </Link>
-                <span className="mm-bus-note">walk with WASD · no download</span>
+                <span className="sm-bus-note">walk with WASD · no download</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="mm-section" id="pocket">
-        <div className="mm-wrap mm-two-up">
-          <article className="mm-quest-card">
-            <div className="mm-quest-top">
-              <span className="mm-quest-icon" aria-hidden="true"><DareIcon /></span>
-              <p className="mm-kicker">a small dare</p>
+      <section className="sm-section" id="pocket">
+        <div className="sm-wrap sm-two-up">
+          <article className="sm-quest-card">
+            <div className="sm-quest-top">
+              <span className="sm-quest-icon" aria-hidden="true"><DareIcon /></span>
+              <p className="sm-kicker">a small dare</p>
             </div>
             <h2>{questAccepted ? 'Dare taken.' : 'One small dare.'}</h2>
             <p>{questAccepted ? `Now go and do it. ${questGame?.title ?? 'Your stall'} is waiting.` : quest.text}</p>
-            <div className="mm-actions">
+            <div className="sm-actions">
               {questAccepted ? (
                 questGame && (
-                  <Link className="mm-btn mm-btn-small mm-btn-gold" href={`/games/${questGame.slug}/play`}>
+                  <Link className="sm-btn sm-btn-small sm-btn-gold" href={`/games/${questGame.slug}/play`}>
                     Start the dare <span aria-hidden="true">→</span>
                   </Link>
                 )
               ) : (
-                <button type="button" className="mm-btn mm-btn-small mm-btn-gold" onClick={acceptDare}>
+                <button type="button" className="sm-btn sm-btn-small sm-btn-gold" onClick={acceptDare}>
                   Take the dare <span aria-hidden="true">✦</span>
                 </button>
               )}
-              <button type="button" className="mm-text-link" onClick={nextDare}>
+              <button type="button" className="sm-text-link" onClick={nextDare}>
                 Another dare <span aria-hidden="true">↻</span>
               </button>
             </div>
-            {questAccepted && <span className="mm-stamp">dare<br />taken</span>}
+            {questAccepted && <span className="sm-stamp">dare<br />taken</span>}
           </article>
 
-          <article className="mm-pocket-card">
-            <p className="mm-kicker">your pocket</p>
+          <article className="sm-pocket-card">
+            <p className="sm-kicker">your pocket</p>
             <h2>Four lights, one constellation.</h2>
             <p>
               Pull a lantern, choose a district, take a dare and leave a wish. The market keeps track. So does the
-              moon.
+              sun.
             </p>
-            <div className="mm-charm-row">
+            <div className="sm-charm-row">
               {CHARMS.map((charm) => {
                 const found = charms[charm.key];
                 return (
-                  <span key={charm.key} className={`mm-charm${found ? ' is-found' : ''}`} title={found ? charm.label : charm.hint}>
+                  <span key={charm.key} className={`sm-charm${found ? ' is-found' : ''}`} title={found ? charm.label : charm.hint}>
                     <span aria-hidden="true"><CharmIcon name={charm.key} /></span>
                     <small>{charm.label}</small>
                   </span>
                 );
               })}
             </div>
-            <div className="mm-progress" aria-hidden="true">
+            <div className="sm-progress" aria-hidden="true">
               <span style={{ width: `${(charmCount / CHARMS.length) * 100}%` }} />
             </div>
-            <p className="mm-pocket-count">
+            <p className="sm-pocket-count">
               {charmCount} of 4 lights found
               {charms.moth ? ' · plus one secret' : ''}
             </p>
-            {charms.moth && <p className="mm-moth-note">You found the moth. It is pretending not to be pleased.</p>}
+            {charms.moth && <p className="sm-moth-note">You found the moth. It is pretending not to be pleased.</p>}
           </article>
         </div>
       </section>
 
-      <section className="mm-section" id="wish">
-        <div className="mm-wrap">
-          <div className="mm-section-head">
+      <section className="sm-section" id="wish">
+        <div className="sm-wrap">
+          <div className="sm-section-head">
             <div>
-              <p className="mm-kicker">a light for the next wanderer</p>
+              <p className="sm-kicker">a light for the next wanderer</p>
               <h2>Leave a wish in the sky.</h2>
               <p>
                 Write a small wish for the market. It stays on this device, floats in the sky below, and makes the
                 place a little more yours.
               </p>
             </div>
-            <span className="mm-side-note">{wishes.length > 0 ? `${wishes.length} lantern${wishes.length === 1 ? '' : 's'} lit` : 'the sky is quiet'}</span>
+            <span className="sm-side-note">{wishes.length > 0 ? `${wishes.length} lantern${wishes.length === 1 ? '' : 's'} lit` : 'the sky is quiet'}</span>
           </div>
 
-          <div className="mm-wish-layout">
-            <form className="mm-wish-form" onSubmit={submitWish}>
-              <label htmlFor="mm-wish">Your wish</label>
-              <div className="mm-wish-input-row">
+          <div className="sm-wish-layout">
+            <form className="sm-wish-form" onSubmit={submitWish}>
+              <label htmlFor="sm-wish">Your wish</label>
+              <div className="sm-wish-input-row">
                 <input
-                  id="mm-wish"
+                  id="sm-wish"
                   value={wishText}
                   onChange={(event) => {
                     setWishText(event.target.value);
@@ -684,45 +684,45 @@ export function MoonMarketExperience() {
                   }}
                   placeholder="One more round, and then I will go home…"
                   maxLength={80}
-                  aria-describedby={wishError ? 'mm-wish-error' : 'mm-wish-help'}
+                  aria-describedby={wishError ? 'sm-wish-error' : 'sm-wish-help'}
                 />
-                <button type="submit" className="mm-btn mm-btn-gold">
+                <button type="submit" className="sm-btn sm-btn-gold">
                   Release <span aria-hidden="true">✦</span>
                 </button>
               </div>
               {wishError ? (
-                <p className="mm-form-error" id="mm-wish-error" role="alert">{wishError}</p>
+                <p className="sm-form-error" id="sm-wish-error" role="alert">{wishError}</p>
               ) : (
-                <p className="mm-form-help" id="mm-wish-help">Eighty letters or fewer. The moon is a good listener.</p>
+                <p className="sm-form-help" id="sm-wish-help">Eighty letters or fewer. The sun is a good listener.</p>
               )}
-              <p className="mm-fineprint">Stored in this browser only. No account, no audience, no performance review.</p>
+              <p className="sm-fineprint">Stored in this browser only. No account, no audience, no performance review.</p>
             </form>
 
-            <div className="mm-wish-sky">
+            <div className="sm-wish-sky">
               {wishes.length === 0 ? (
-                <div className="mm-empty mm-empty-wish">
-                  <span className="mm-empty-glyph" aria-hidden="true">✦</span>
+                <div className="sm-empty sm-empty-wish">
+                  <span className="sm-empty-glyph" aria-hidden="true">✦</span>
                   <div>
                     <b>The sky is holding its breath.</b>
-                    <p>Your lantern could be the first one up tonight.</p>
+                    <p>Your lantern could be the first one up today.</p>
                   </div>
                 </div>
               ) : (
-                <div className="mm-wish-lanterns">
+                <div className="sm-wish-lanterns">
                   {wishes.map((wish) => (
                     <article
                       key={wish.id}
-                      className={`mm-wish-lantern${latestWish === wish.id ? ' is-new' : ''}`}
+                      className={`sm-wish-lantern${latestWish === wish.id ? ' is-new' : ''}`}
                     >
-                      <span className="mm-wish-cap" aria-hidden="true" />
+                      <span className="sm-wish-cap" aria-hidden="true" />
                       <p>{wish.text}</p>
                       <time dateTime={wish.at}>{formatWishTime(wish.at)}</time>
                     </article>
                   ))}
                 </div>
               )}
-              <div className="mm-whispers">
-                <span className="mm-whispers-label">whispers already in the sky</span>
+              <div className="sm-whispers">
+                <span className="sm-whispers-label">whispers already in the sky</span>
                 {AMBIENT_WISHES.map((wish) => (
                   <p key={wish.text}>
                     “{wish.text}” <span>— {wish.by}</span>
@@ -735,30 +735,30 @@ export function MoonMarketExperience() {
       </section>
 
       {allCharms && (
-        <section className="mm-section mm-reward-section" id="constellation">
-          <div className="mm-wrap">
-            <div className="mm-reward">
-              <div className="mm-reward-stars" aria-hidden="true">
+        <section className="sm-section sm-reward-section" id="constellation">
+          <div className="sm-wrap">
+            <div className="sm-reward">
+              <div className="sm-reward-stars" aria-hidden="true">
                 <i /><i /><i /><i /><i />
               </div>
               <div>
-                <p className="mm-kicker">the moon noticed</p>
+                <p className="sm-kicker">the sun noticed</p>
                 <h2>A constellation with your name on it.</h2>
                 <p>
                   You found the lantern, a district, a dare and a wish. The market keeper has left you the key to
                   the best seat in the house: the bench at the Hangout, right under the sky.
                 </p>
-                <div className="mm-actions">
-                  <Link className="mm-btn mm-btn-gold" href="/hangout">
+                <div className="sm-actions">
+                  <Link className="sm-btn sm-btn-gold" href="/hangout">
                     Take the key <span aria-hidden="true">→</span>
                   </Link>
-                  <Link className="mm-text-link" href="/toybox/design">
+                  <Link className="sm-text-link" href="/toybox/design">
                     Read the design notes <span aria-hidden="true">↗</span>
                   </Link>
                 </div>
               </div>
-              <div className="mm-reward-card">
-                <span className="mm-result-kicker">the keeper&apos;s key</span>
+              <div className="sm-reward-card">
+                <span className="sm-result-kicker">the keeper&apos;s key</span>
                 <b aria-hidden="true">✦</b>
                 <p>One bench. One sky. No closing time. The moth says the soup stall is still open.</p>
               </div>
@@ -767,40 +767,40 @@ export function MoonMarketExperience() {
         </section>
       )}
 
-      <section className="mm-section mm-deck-section">
-        <div className="mm-wrap">
-          <div className="mm-deck">
+      <section className="sm-section sm-deck-section">
+        <div className="sm-wrap">
+          <div className="sm-deck">
             <div>
-              <p className="mm-kicker">the thinking behind the lights</p>
-              <h2>Why a night market?</h2>
+              <p className="sm-kicker">the thinking behind the lights</p>
+              <h2>Why a day market?</h2>
               <p>
-                The Moon Market is a separate design direction for start.ng: a warmer, more atmospheric way to
+                The Sun Market is a separate design direction for start.ng: a warmer, more atmospheric way to
                 present the same catalogue. The faithful clone is still at the front door. This is what the city
-                looks like after the last bus.
+                looks like when the city slows down.
               </p>
             </div>
-            <Link className="mm-btn mm-btn-quiet" href="/toybox/design">
+            <Link className="sm-btn sm-btn-quiet" href="/toybox/design">
               Read the design notes <span aria-hidden="true">↗</span>
             </Link>
           </div>
         </div>
       </section>
 
-      <aside className={`mm-satchel${satchelOpen ? ' is-open' : ''}${allCharms ? ' is-lit' : ''}`} aria-label="Your market charms">
+      <aside className={`sm-satchel${satchelOpen ? ' is-open' : ''}${allCharms ? ' is-lit' : ''}`} aria-label="Your market charms">
         <button
           type="button"
-          className="mm-satchel-toggle"
+          className="sm-satchel-toggle"
           onClick={() => setSatchelOpen((open) => !open)}
           aria-expanded={satchelOpen}
-          aria-controls="mm-satchel-panel"
+          aria-controls="sm-satchel-panel"
         >
-          <span className="mm-satchel-moon" aria-hidden="true">✦</span>
-          <span className="mm-satchel-count" aria-live="polite">{charmCount}/4</span>
-          <span className="mm-satchel-label">charms</span>
+          <span className="sm-satchel-sun" aria-hidden="true">✦</span>
+          <span className="sm-satchel-count" aria-live="polite">{charmCount}/4</span>
+          <span className="sm-satchel-label">charms</span>
         </button>
         {satchelOpen && (
-          <div className="mm-satchel-panel" id="mm-satchel-panel">
-            <p className="mm-kicker">your pocket</p>
+          <div className="sm-satchel-panel" id="sm-satchel-panel">
+            <p className="sm-kicker">your pocket</p>
             <b>{allCharms ? 'All lights found.' : 'Four small lights.'}</b>
             <ul>
               {CHARMS.map((charm) => (
@@ -816,56 +816,56 @@ export function MoonMarketExperience() {
                 </li>
               )}
             </ul>
-            <p>{allCharms ? 'The moon has noticed you.' : 'The moon is watching. Politely.'}</p>
+            <p>{allCharms ? 'The sun has noticed you.' : 'The sun is watching. Politely.'}</p>
           </div>
         )}
       </aside>
 
       {mothOpen && (
-        <div className="mm-modal-overlay" onClick={() => setMothOpen(false)}>
+        <div className="sm-modal-overlay" onClick={() => setMothOpen(false)}>
           <div
-            className="mm-modal"
+            className="sm-modal"
             role="dialog"
             aria-modal="true"
-            aria-labelledby="mm-moth-title"
+            aria-labelledby="sm-moth-title"
             onClick={(event) => event.stopPropagation()}
           >
             <button
               type="button"
-              className="mm-modal-close"
-              aria-label="Close the moon moth's secret"
+              className="sm-modal-close"
+              aria-label="Close the sun moth's secret"
               onClick={() => setMothOpen(false)}
               ref={mothCloseRef}
             >
               ✕
             </button>
-            <div className="mm-modal-moth" aria-hidden="true"><MothIcon /></div>
-            <p className="mm-kicker">a secret from the moon moth</p>
-            <h2 id="mm-moth-title">You found a small door.</h2>
+            <div className="sm-modal-moth" aria-hidden="true"><MothIcon /></div>
+            <p className="sm-kicker">a secret from the sun moth</p>
+            <h2 id="sm-moth-title">You found a small door.</h2>
             <p>
               The moth has been here since the first stall opened. It says the Hangout has a bench with the best
-              view of the sky, and that the Night Bus is late on purpose. It also says you look like someone who
+              view of the sky, and that the Breeze Line is late on purpose. It also says you look like someone who
               would enjoy this:
             </p>
-            <div className="mm-modal-pick">
+            <div className="sm-modal-pick">
               <img src={mothPickCover} alt="" />
               <div>
-                <span className="mm-result-kicker">the moth&apos;s stall of the night</span>
+                <span className="sm-result-kicker">the sun moth&apos;s stall</span>
                 <b>{mothPick?.title ?? 'Follow Follow'}</b>
                 <span>by {mothPick?.by ?? 'start.ng'}</span>
               </div>
             </div>
-            <div className="mm-actions">
+            <div className="sm-actions">
               {mothPick && (
-                <Link className="mm-btn mm-btn-small mm-btn-gold" href={`/games/${mothPick.slug}/play`}>
+                <Link className="sm-btn sm-btn-small sm-btn-gold" href={`/games/${mothPick.slug}/play`}>
                   Take the moth&apos;s pick <span aria-hidden="true">→</span>
                 </Link>
               )}
-              <button type="button" className="mm-text-link" onClick={() => setMothOpen(false)}>
+              <button type="button" className="sm-text-link" onClick={() => setMothOpen(false)}>
                 Keep wandering
               </button>
             </div>
-            <p className="mm-fineprint">An easter egg. Nothing is unlocked except a feeling.</p>
+            <p className="sm-fineprint">An easter egg. Nothing is unlocked except a feeling.</p>
           </div>
         </div>
       )}
@@ -885,15 +885,15 @@ function StallCard({
   onKeep: () => void;
 }) {
   return (
-    <article className="mm-stall-card">
-      <div className="mm-stall-art">
+    <article className="sm-stall-card">
+      <div className="sm-stall-art">
         <Link href={`/games/${game.slug}`} aria-label={`Open ${game.title}`}>
           <img src={game.cover} alt={`${game.title} cover`} loading="lazy" decoding="async" />
         </Link>
-        <span className="mm-stall-tag">{tag}</span>
+        <span className="sm-stall-tag">{tag}</span>
         <button
           type="button"
-          className={`mm-keep${kept ? ' is-kept' : ''}`}
+          className={`sm-keep${kept ? ' is-kept' : ''}`}
           onClick={onKeep}
           aria-pressed={kept}
           aria-label={kept ? `Remove ${game.title} from your pocket` : `Keep ${game.title} in your pocket`}
@@ -901,13 +901,13 @@ function StallCard({
         >
           <StarIcon filled={kept} />
         </button>
-        <span className="mm-stall-lantern" aria-hidden="true" />
+        <span className="sm-stall-lantern" aria-hidden="true" />
       </div>
-      <div className="mm-stall-meta">
+      <div className="sm-stall-meta">
         <h3><Link href={`/games/${game.slug}`}>{game.title}</Link></h3>
-        <span className="mm-stall-by">by {game.by}</span>
+        <span className="sm-stall-by">by {game.by}</span>
       </div>
-      <div className="mm-stall-foot">
+      <div className="sm-stall-foot">
         <Link href={`/games/${game.slug}/play`}>Play now <span aria-hidden="true">→</span></Link>
         <span>{formatPlays(game.plays)} plays</span>
       </div>
@@ -919,7 +919,7 @@ function formatWishTime(at: string) {
   try {
     return new Intl.DateTimeFormat('en-NG', { hour: 'numeric', minute: '2-digit' }).format(new Date(at));
   } catch {
-    return 'tonight';
+    return 'today';
   }
 }
 
