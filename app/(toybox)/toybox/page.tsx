@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
-import { ToyboxExperience } from '@/components/ToyboxExperience';
+import { MoonMarketExperience } from '@/components/MoonMarketExperience';
 
 export const metadata: Metadata = {
-  title: 'The Toybox · a start.ng design direction',
-  description: 'A paper-cut playroom for start.ng. Pull the game handle, mix a mood, take a tiny dare. Same games, more confetti.',
+  title: 'The Moon Market · a start.ng design direction',
+  description:
+    'A floating night market above Lagos. Pull a lantern, choose a district, take a dare and leave a wish. Same 189 games, after hours.',
 };
 
-export default function ToyboxPage() {
-  return <ToyboxExperience />;
+export default function MoonMarketPage() {
+  return <MoonMarketExperience />;
 }

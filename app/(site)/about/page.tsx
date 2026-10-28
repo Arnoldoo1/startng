@@ -36,7 +36,7 @@ export default function AboutPage() {
       </div>
 
       <h2>A second home, with more glue and glitter</h2>
-      <p className="lede">We also made a small design experiment called <Link href="/toybox" style={{ textDecoration: 'underline', textDecorationColor: 'var(--lime-deep)', textDecorationThickness: 3, textUnderlineOffset: 3 }}>The Toybox</Link>: a paper-cut playroom for start.ng. It is not the main site. Think of it as the Saturday morning cartoon version, with the same games and a lot more confetti.</p>
+      <p className="lede">We also made a small design experiment called <Link href="/toybox" style={{ textDecoration: 'underline', textDecorationColor: 'var(--lime-deep)', textDecorationThickness: 3, textUnderlineOffset: 3 }}>The Moon Market</Link>: a floating night market above Lagos where every stall is a game and the moon keeps score. It is not the main site. Think of it as the after-hours version, with the same games and rather more lanterns.</p>
     </main>
   );
 }
